@@ -25,7 +25,7 @@ jobs:
           echo "mainURL = https://gd.zsycm.xyz" > webapk.conf
           echo "name = SP-GOLD" >> webapk.conf
           echo "id = com.yourapp.id" >> webapk.conf
-          echo "icon = logo.png" >> webapk.conf
+          echo "icon = ic_launcher.png" >> webapk.conf
 
       - name: Generate keystore
         run: ./make.sh keygen
