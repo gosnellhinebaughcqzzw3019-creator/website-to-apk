@@ -1,0 +1,40 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Create config file
+        run: |
+          echo "mainURL = https://gd.zsycm.xyz" > webapk.conf
+          echo "name = SP-GOLD" >> webapk.conf
+          echo "id = com.yourapp.id" >> webapk.conf
+          echo "icon = logo.png" >> webapk.conf
+
+      - name: Generate keystore
+        run: ./make.sh keygen
+
+      - name: Build APK
+        run: ./make.sh build
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
